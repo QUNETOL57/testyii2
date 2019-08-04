@@ -4,6 +4,10 @@ namespace app\models;
 
 use Yii;
 
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
+
 /**
  * This is the model class for table "books".
  *
@@ -47,11 +51,11 @@ class Books extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'date_manuf' => 'Date Manuf',
-            'author' => 'Author',
-            'date_create' => 'Date Create',
-            'date_change' => 'Date Change',
+            'name' => 'Название',
+            'date_manuf' => 'Год выпуска',
+            'author' => 'Автор',
+            'date_create' => 'Дата создания',
+            'date_change' => 'Дата изменения',
         ];
     }
 
@@ -61,5 +65,18 @@ class Books extends \yii\db\ActiveRecord
     public function getAuthor0()
     {
         return $this->hasOne(Authors::className(), ['id' => 'author']);
+    }
+
+    public function behaviors(){
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['date_create', 'date_change'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['date_change'],
+                ],
+                'value' => new Expression('NOW()'),
+            ],
+        ];
     }
 }

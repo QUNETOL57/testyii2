@@ -3,6 +3,9 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
+use \kartik\date\DatePicker;
+
+use \kartik\datecontrol\DateControl;
 /* @var $this yii\web\View */
 /* @var $model app\models\Authors */
 /* @var $form yii\widgets\ActiveForm */
@@ -14,16 +17,29 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'date_birth')->textInput() ?>
+    <?php 
+        // echo $form->field($model, 'date_birth')->widget(DatePicker::classname(), [
+        //     'pluginOptions' => [
+        //         'autoclose'=>true,
+        //         'format' => 'yyyy-mm-dd',
+        //     ]
+        // ]);
+
+        echo $form->field($model, 'date_birth')->widget(DateControl::classname(), [
+            // 'pluginOptions' => [
+            //     'autoclose'=>true,
+            //     'format' => 'yyyy-mm-dd',
+            // ]
+        ]);
+        
+
+    ?>
 
     <?= $form->field($model, 'biography')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'date_create')->textInput() ?>
-
-    <?= $form->field($model, 'date_change')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

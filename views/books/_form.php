@@ -18,9 +18,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'author')->textInput() ?>
 
-    <?= $form->field($model, 'date_create')->textInput() ?>
-
-    <?= $form->field($model, 'date_change')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

@@ -4,6 +4,10 @@ namespace app\models;
 
 use Yii;
 
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
+
 /**
  * This is the model class for table "authors".
  *
@@ -21,6 +25,8 @@ class Authors extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    public $books_count;
+
     public static function tableName()
     {
         return 'authors';
@@ -46,19 +52,33 @@ class Authors extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'date_birth' => 'Date Birth',
-            'biography' => 'Biography',
-            'date_create' => 'Date Create',
-            'date_change' => 'Date Change',
+            'name' => 'Имя',
+            'date_birth' => 'Дата Рождения',
+            'biography' => 'Биография',
+            'books_count' => 'Количество книг',
+            'date_create' => 'Дата создания',
+            'date_change' => 'Дата изменения',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getBooks()
-    {
+    public function getBooks(){
         return $this->hasMany(Books::className(), ['author' => 'id']);
+    }
+
+
+    public function behaviors(){
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['date_create', 'date_change'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['date_change'],
+                ],
+                'value' => new Expression('NOW()'),
+            ],
+        ];
     }
 }

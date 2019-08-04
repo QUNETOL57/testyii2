@@ -25,7 +25,7 @@ AppAsset::register($this);
                         <a class="navbar-brand" href="#">ROUTEAM</a>
                     </div>
                      <ul class="nav navbar-nav">
-                        <li><?= Html::a('Главная', ['lib/index']) ?></li>
+                        <li><?= Html::a('Библиотека', ['lib/index']) ?></li>
                         <li><?= Html::a('Авторы', ['authors/index']) ?></li>
                         <li><?= Html::a('Книги', ['books/index']) ?></li>
                      </ul>

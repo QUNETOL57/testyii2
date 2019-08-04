@@ -18,7 +18,7 @@ class AuthorsSearch extends Authors
     {
         return [
             [['id'], 'integer'],
-            [['name', 'date_birth', 'biography', 'date_create', 'date_change'], 'safe'],
+            [['name', 'date_birth', 'biography', 'books_count', 'date_create', 'date_change',], 'safe'],
         ];
     }
 
@@ -40,13 +40,23 @@ class AuthorsSearch extends Authors
      */
     public function search($params)
     {
-        $query = Authors::find();
+        $subQuery = Authors::find()
+            ->select(['{{%authors}}.*', 'books_count' => new \yii\db\Expression('COUNT({{%books}}.id)')])
+            ->joinWith(['books'])
+            ->groupBy('{{%authors}}.id');
+
+        $query = Authors::find()->from($subQuery);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        $dataProvider->sort->attributes['books_count'] = [
+            'asc' => ['books_count' => SORT_ASC],
+            'desc' => ['books_count' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -60,6 +70,7 @@ class AuthorsSearch extends Authors
         $query->andFilterWhere([
             'id' => $this->id,
             'date_birth' => $this->date_birth,
+            'books_count' => $this->books_count,
             'date_create' => $this->date_create,
             'date_change' => $this->date_change,
         ]);
