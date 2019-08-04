@@ -7,6 +7,8 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'layout' => 'basic',
+    'language' => 'ru-RU',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -51,6 +53,10 @@ $config = [
             ],
         ],
         */
+        'formatter' =>[
+            'dateFormat' => 'php: d/m/Y',
+            'datetimeFormat' => 'php: d/m/Y H:i'
+        ],
     ],
     'params' => $params,
 ];
