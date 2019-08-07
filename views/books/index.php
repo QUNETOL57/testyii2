@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'name',
+            'desc_book:ntext',
             'date_manuf',
             [
                 'attribute' => 'author',
@@ -62,3 +63,4 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 </div>
+
