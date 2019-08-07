@@ -64,23 +64,17 @@ class Books extends \yii\db\ActiveRecord
         ];
     }
 
-
-    public function beforeSave($insert)
-    {
+    public function beforeSave($insert){
         if (parent::beforeSave($insert)) {
             $model = new BookChangeDesc;
             $model['id_book'] = $this->id;
             $model['old_desc_book'] = $this->getOldAttribute('desc_book');
-            // echo $model['old_desc_book'];
             $model->save();
             return true;
         }
         return false;
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getBookChangeDescs()
     {
         return $this->hasMany(BookChangeDesc::className(), ['id_book' => 'id']);
@@ -91,7 +85,7 @@ class Books extends \yii\db\ActiveRecord
      */
     public function getAuthor0()
     {
-        return $this->hasOne(Authors::className(), ['id' => 'author']);
+        return $this->hasOne(Authors::className(), ['id' => 'author'])->alias('avtor');
     }
 
     public function behaviors(){
