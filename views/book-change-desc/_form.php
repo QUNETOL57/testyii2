@@ -4,25 +4,19 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Books */
+/* @var $model app\models\BookChangeDesc */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="books-form">
+<div class="book-change-desc-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'id_book')->textInput() ?>
 
-    <?= $form->field($model, 'desc_book')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'date_manuf')->textInput() ?>
-
-    <?= $form->field($model, 'author')->textInput() ?>
+    <?= $form->field($model, 'old_desc_book')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'date_create')->textInput() ?>
-
-    <?= $form->field($model, 'date_change')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

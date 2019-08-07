@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Books;
+use app\models\BookChangeDesc;
 
 /**
- * BooksSearch represents the model behind the search form of `app\models\Books`.
+ * BookChangeDescSearch represents the model behind the search form of `app\models\BookChangeDesc`.
  */
-class BooksSearch extends Books
+class BookChangeDescSearch extends BookChangeDesc
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class BooksSearch extends Books
     public function rules()
     {
         return [
-            [['id', 'date_manuf', 'author'], 'integer'],
-            [['name', 'desc_book', 'date_create', 'date_change'], 'safe'],
+            [['id', 'id_book'], 'integer'],
+            [['old_desc_book', 'date_create'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class BooksSearch extends Books
      */
     public function search($params)
     {
-        $query = Books::find();
+        $query = BookChangeDesc::find();
 
         // add conditions that should always apply here
 
@@ -59,14 +59,11 @@ class BooksSearch extends Books
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'date_manuf' => $this->date_manuf,
-            'author' => $this->author,
+            'id_book' => $this->id_book,
             'date_create' => $this->date_create,
-            'date_change' => $this->date_change,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'desc_book', $this->desc_book]);
+        $query->andFilterWhere(['like', 'old_desc_book', $this->old_desc_book]);
 
         return $dataProvider;
     }
