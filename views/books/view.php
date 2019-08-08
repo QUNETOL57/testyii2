@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h4>История изменения описания</h4>
     <?php 
         $dataProvider = new ActiveDataProvider([
-            'query' => BookChangeDesc::find()->with(),
+            'query' => BookChangeDesc::find()->where(['id_book'=> $model->id]),
         ]);
     ?>
     <?= GridView::widget([
