@@ -17,6 +17,10 @@ $columns = [
     'id',
     'name',
     'desc_book:ntext',
+    [
+        'attribute' => 'id_hero',
+        'value' => 'hero.name',
+    ],
     'date_manuf',
     [
         'attribute' => 'authorName',

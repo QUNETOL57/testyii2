@@ -21,6 +21,7 @@ use app\models\BookChangeDesc;
  *
  * @property BookChangeDesc[] $bookChangeDescs
  * @property Authors $author0
+ * @property Heroes $hero
  */
 class Books extends \yii\db\ActiveRecord
 {  
@@ -42,6 +43,7 @@ class Books extends \yii\db\ActiveRecord
             [['date_create', 'date_change'], 'safe'],
             [['name'], 'string', 'max' => 255],
             [['author'], 'exist', 'skipOnError' => true, 'targetClass' => Authors::className(), 'targetAttribute' => ['author' => 'id']], 
+            [['id_hero'], 'exist', 'skipOnError' => true, 'targetClass' => Heroes::className(), 'targetAttribute' => ['id_hero' => 'id']],
         ];
     }
 
@@ -54,6 +56,7 @@ class Books extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Название',
             'desc_book' => 'Описание',
+            'id_hero' => 'Главный герой',
             'date_manuf' => 'Год выпуска',
             'author' => 'Автор',
             'date_create' => 'Дата создания',
@@ -83,6 +86,11 @@ class Books extends \yii\db\ActiveRecord
     public function getAuthor0()
     {
         return $this->hasOne(Authors::className(), ['id' => 'author'])->alias('avtor');
+    }
+
+    public function getHero()
+    {
+        return $this->hasOne(Heroes::className(), ['id' => 'id_hero']);
     }
 
     public function behaviors(){

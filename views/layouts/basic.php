@@ -28,6 +28,7 @@ AppAsset::register($this);
                         <li><?= Html::a('Библиотека', ['lib/index']) ?></li>
                         <li><?= Html::a('Авторы', ['authors/index']) ?></li>
                         <li><?= Html::a('Книги', ['books/index']) ?></li>
+                        <li><?= Html::a('Герои', ['heroes/index']) ?></li>
                      </ul>
                 </div>
             </nav>  

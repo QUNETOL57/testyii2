@@ -3,66 +3,68 @@
 namespace app\models;
 
 use Yii;
-
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
-use yii\web\ForbiddenHttpException;
 
 /**
- * This is the model class for table "authors".
+ * This is the model class for table "heroes".
  *
  * @property int $id
  * @property string $name
- * @property string $date_birth
- * @property string $biography
+ * @property string $about
+ * @property string $image
  * @property string $date_create
  * @property string $date_change
  *
  * @property Books[] $books
  */
-class Authors extends \yii\db\ActiveRecord
+class Heroes extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
-    public $books_count;
+    public $fileImage;
 
     public static function tableName()
     {
-        return 'authors';
+        return 'heroes';
     }
 
-    public static function IdAuthor($name){
-        $id = Authors::find()->where(['name' => $name])->one();
-        if ($id){
-            return $id->id;
-        }
-    }
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['name', 'biography'], 'required'],
-            [['date_birth', 'date_create', 'date_change'], 'safe'],
-            [['biography'], 'string'],
-            [['name'], 'string', 'max' => 255],
+            [['name', 'about'], 'required'],
+            [['date_create', 'date_change', 'image'], 'safe'],
+            [['name', 'about'], 'string', 'max' => 255],
+            [['fileImage'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png jpg'],
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function upload()
+    {
+        if ($this->validate()) {
+            $this->fileImage->saveAs('img/' . $this->fileImage->baseName . '.' . $this->fileImage->extension);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function beforeSave($insert){
+        if(!$this->isNewRecord && self::getOldAttribute('image') != ''){
+                $this->image = self::getOldAttribute('image');
+        }
+        return parent::beforeSave($insert); 
+    }
+
     public function attributeLabels()
     {
         return [
             'id' => 'ID',
             'name' => 'Имя',
-            'date_birth' => 'Дата Рождения',
-            'biography' => 'Биография',
-            'books_count' => 'Количество книг',
+            'about' => 'Описание',
+            'image' => 'Изображение',
             'date_create' => 'Дата создания',
             'date_change' => 'Дата изменения',
         ];
@@ -71,10 +73,10 @@ class Authors extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getBooks(){
-        return $this->hasMany(Books::className(), ['author' => 'id']);
+    public function getBooks()
+    {
+        return $this->hasMany(Books::className(), ['id_hero' => 'id']);
     }
-
 
     public function behaviors(){
         return [

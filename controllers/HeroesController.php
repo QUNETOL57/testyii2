@@ -4,21 +4,17 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Heroes;
-use app\models\Books;
-use app\models\BooksSearch;
+use app\models\HeroesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\UploadForm;
+use app\models\UploadImage;
 use yii\web\UploadedFile;
-use app\models\Authors;
-use yii\base\ErrorException;
 
-use yii\widgets\Pjax;
 /**
- * BooksController implements the CRUD actions for Books model.
+ * HeroesController implements the CRUD actions for Heroes model.
  */
-class BooksController extends Controller
+class HeroesController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -36,12 +32,12 @@ class BooksController extends Controller
     }
 
     /**
-     * Lists all Books models.
+     * Lists all Heroes models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new BooksSearch();
+        $searchModel = new HeroesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -50,34 +46,8 @@ class BooksController extends Controller
         ]);
     }
 
-    public function actionUpload(){
-            $model = new UploadForm();
-            if (Yii::$app->request->isPost ) {
-                $model->fileName = UploadedFile::getInstance($model, 'fileName');
-                if ($model->upload()) {
-                        if (($csv = fopen('csv/'.$model->fileName->name, 'r')) !== false) {
-                            while (($row = fgetcsv($csv, 1000, ',')) !== false) {
-                                try {
-                                    $model = new Books();
-                                    $model->name = $row[0];
-                                    $model->author = Authors::idAuthor($row[1]);
-                                    $model->date_create = $row[2];
-                                    
-                                    if ($model->validate()) {
-                                        $model->save();
-                                    }
-                                } catch (\Exception $e) {
-                                    continue;
-                                }    
-                            }
-                            fclose($csv);
-                        };
-                }
-        }
-        return $this->render('upload', ['model' => $model]);    
-    }
     /**
-     * Displays a single Books model.
+     * Displays a single Heroes model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -90,25 +60,28 @@ class BooksController extends Controller
     }
 
     /**
-     * Creates a new Books model.
+     * Creates a new Heroes model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Books();
+        $model = new Heroes();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->fileImage = UploadedFile::getInstance($model, 'fileImage');
+            $model->image = 'img/' . $model->fileImage->baseName . '.' . $model->fileImage->extension;
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
+        
         return $this->render('create', [
             'model' => $model,
         ]);
     }
 
     /**
-     * Updates an existing Books model.
+     * Updates an existing Heroes model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -118,7 +91,10 @@ class BooksController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->fileImage = UploadedFile::getInstance($model, 'fileImage');
+            $model->image = 'img/' . $model->fileImage->baseName . '.' . $model->fileImage->extension;
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -128,7 +104,7 @@ class BooksController extends Controller
     }
 
     /**
-     * Deletes an existing Books model.
+     * Deletes an existing Heroes model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -141,22 +117,18 @@ class BooksController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionShow($id){
-        if(Yii::$app->request->isAjax){ 
-            return Heroes::find()->where(['id' => $id])->one()->name; 
-        }
-        
-    }
+
+
     /**
-     * Finds the Books model based on its primary key value.
+     * Finds the Heroes model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Books the loaded model
+     * @return Heroes the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Books::findOne($id)) !== null) {
+        if (($model = Heroes::findOne($id)) !== null) {
             return $model;
         }
 

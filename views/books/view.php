@@ -3,9 +3,13 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
+use app\models\Books;
 use yii\data\ActiveDataProvider;
-
+use yii\widgets\Pjax;
 use app\models\BookChangeDesc;
+use yii\helpers\Url;
+
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Books */
 
@@ -41,6 +45,28 @@ $this->params['breadcrumbs'][] = $this->title;
             'date_change',
         ],
     ]) ?>
+
+    <?= Html::submitButton('Показать героев', ['class' => 'btn btn-success', 'id' => 'hero']) ?>
+    <?php 
+        $js = <<<JS
+            $('#hero').on('click',function(){
+                $.ajax({
+                    url: "index.php?r=books/show",
+                    data: {id: $model->id_hero},
+                    type: 'GET',
+                    success: function(data){
+                        $('#hero_plase').text('Главный герой в книге - ' + data);
+                    },
+                    error: function(){
+                        alert('error');
+                    }
+                });
+            });
+JS;
+        $this->registerJS($js);
+    ?>
+    <h2 id="hero_plase"></h2>
+    <hr>
     <h4>История изменения описания</h4>
     <?php 
         $dataProvider = new ActiveDataProvider([
