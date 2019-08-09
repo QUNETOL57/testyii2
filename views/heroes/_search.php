@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\BooksSearch */
+/* @var $model app\models\HeroesSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="books-search">
+<div class="heroes-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -19,15 +19,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'desc_book') ?>
-    
-    <?= $form->field($model, 'id_hero') ?>
+    <?= $form->field($model, 'about') ?>
 
-    <?= $form->field($model, 'date_manuf') ?>
+    <?= $form->field($model, 'image') ?>
 
-    <?= $form->field($model, 'author') ?>
-
-    <?php // echo $form->field($model, 'date_create') ?>
+    <?= $form->field($model, 'date_create') ?>
 
     <?php // echo $form->field($model, 'date_change') ?>
 

@@ -18,7 +18,7 @@ class BooksSearch extends Books
     public function rules()
     {
         return [
-            [['id', 'date_manuf' ], 'integer'],
+            [['id', 'date_manuf','id_hero' ], 'integer'],
             [['author'], 'safe'],
             [['authorName'], 'string'],
             [['name', 'desc_book', 'date_create', 'date_change', 'authorName'], 'safe'],
@@ -77,6 +77,7 @@ class BooksSearch extends Books
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'id_hero' => $this->id_hero,
             'date_manuf' => $this->date_manuf,
             'date_create' => $this->date_create,
             'date_change' => $this->date_change,

@@ -15,6 +15,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'desc_book')->textarea(['rows' => 6]) ?>
+    
+    <?= $form->field($model, 'id_hero')->textInput() ?>
 
     <?= $form->field($model, 'date_manuf')->textInput() ?>
 
