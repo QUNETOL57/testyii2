@@ -7,6 +7,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+use yii\web\ForbiddenHttpException;
 
 /**
  * This is the model class for table "authors".
@@ -32,6 +33,13 @@ class Authors extends \yii\db\ActiveRecord
         return 'authors';
     }
 
+    public static function IdAuthor($name){
+        $id = Authors::find()->where(['name' => $name])->one();
+        if($id){
+            return $id->id;
+        }
+        
+    }
     /**
      * {@inheritdoc}
      */

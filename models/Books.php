@@ -3,7 +3,6 @@
 namespace app\models;
 
 use Yii;
-
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
@@ -24,10 +23,8 @@ use app\models\BookChangeDesc;
  * @property Authors $author0
  */
 class Books extends \yii\db\ActiveRecord
-{
-    /**
-     * {@inheritdoc}
-     */
+{  
+    public $fileName;
     public static function tableName()
     {
         return 'books';
@@ -44,7 +41,7 @@ class Books extends \yii\db\ActiveRecord
             [['date_manuf', 'author'], 'integer'],
             [['date_create', 'date_change'], 'safe'],
             [['name'], 'string', 'max' => 255],
-            [['author'], 'exist', 'skipOnError' => true, 'targetClass' => Authors::className(), 'targetAttribute' => ['author' => 'id']],
+            [['author'], 'exist', 'skipOnError' => true, 'targetClass' => Authors::className(), 'targetAttribute' => ['author' => 'id']], 
         ];
     }
 

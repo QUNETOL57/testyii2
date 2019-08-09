@@ -10,15 +10,9 @@ use yii\widgets\ActiveForm;
 
 <div class="books-form">
 
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'desc_book')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'date_manuf')->textInput() ?>
-
-    <?= $form->field($model, 'author')->textInput() ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+    <h1>Загрузка файла</h1>
+    <?= $form->field($model, 'fileName')->fileInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
