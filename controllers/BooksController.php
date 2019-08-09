@@ -9,6 +9,14 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use app\models\UploadForm;
+use yii\web\UploadedFile;
+
+use app\models\Authors;
+
+use yii\base\ErrorException;
+
+
 /**
  * BooksController implements the CRUD actions for Books model.
  */
@@ -73,6 +81,37 @@ class BooksController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+
+    public function actionUpload()
+    {
+        
+            $model = new UploadForm();
+            if (Yii::$app->request->isPost ) {
+                $model->fileName = UploadedFile::getInstance($model, 'fileName');
+                if ($model->upload()) {
+                        if (($csv = fopen('csv/'.$model->fileName->name, 'r')) !== false) {
+                            while (($row = fgetcsv($csv, 1000, ',')) !== false) {
+                                try {
+                                    $model = new Books();
+                                    $model->name = $row[0];
+                                    $model->author = Authors::idAuthor($row[1]);
+                                    $model->date_create = $row[2];
+                                    
+                                    if ($model->validate()) {
+                                        $model->save();
+                                    }
+                                } catch (\Exception $e) {
+                                    continue;
+                                }    
+                            }
+                            fclose($csv);
+                        };
+                }
+        }
+        return $this->render('upload', ['model' => $model]);
+
+        
     }
 
     /**
