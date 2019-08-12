@@ -19,6 +19,9 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'osrsDL-6aqUKLxEOPqs5vHpzgXnDMQXX',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -47,14 +50,20 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
+            // 'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'pluralize' => false,
+                    'controller' => [
+                        'api/books',
+                    ],
+                ],
             ],
         ],
-        */
         'formatter' =>[
             'dateFormat' => 'php: d/m/Y',
             'datetimeFormat' => 'php: d/m/Y H:i'
@@ -62,6 +71,10 @@ $config = [
     ],
     'params' => $params,
     'modules' => [
+        'api' => [
+            'class' => 'app\modules\api\Rest',
+            'basePath' => '@app/modules/api',
+        ],
        'datecontrol' => [
            'class' => 'kartik\datecontrol\Module',
             'displaySettings' => [
@@ -103,6 +116,7 @@ if (YII_ENV_DEV) {
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
         //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['*'],
     ];
 }
 
