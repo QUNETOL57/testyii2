@@ -1,16 +1,14 @@
 <?php
 
-namespace app\models;
+namespace  app\modules\api\models;
 
 use app\modules\api\models\Books_api;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Books;
 
-/**
- * BooksSearch represents the model behind the search form of `app\models\Books`.
- */
-class BooksSearch extends Books
+
+class BooksSearchApi extends Books
 {
     public $authorName;
     public $heroName;
@@ -55,7 +53,7 @@ class BooksSearch extends Books
         ]);
         $dataProvider->setSort([
             'attributes' => [
-                'id',   
+                'id',
                 'authorName' => [
                     'asc' => ['avtor.name' => SORT_ASC],
                     'desc' => ['avtor.name' => SORT_DESC],
@@ -73,14 +71,14 @@ class BooksSearch extends Books
                 ],
             ]
         ]);
-        
-        $this->load($params);
+
+        $this->load($params,'');
 ////
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');\
-            return $dataProvider;
-        }
+//        if (!$this->validate()) {
+//            // uncomment the following line if you do not want to return any records when validation fails
+//            // $query->where('0=1');\
+//            return $dataProvider;
+//        }
 //
         // grid filtering conditions
         $query->andFilterWhere([
